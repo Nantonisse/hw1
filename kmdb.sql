@@ -98,19 +98,20 @@
 -- Turns column mode on but headers off
 .mode column
 .headers off
-
+.width 30 30 30
 
 -- Drop existing tables, so you'll start fresh each time this script is run.
 DROP TABLE IF EXISTS movies;
 DROP TABLE IF EXISTS casts;
+DROP TABLE IF EXISTS studios;
 
 -- Create new tables, according to your domain model
 CREATE TABLE movies (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  movie_title TEXT(30),
+  studio_id INTEGER,
+  movie_title TEXT,
   year_released TEXT,
-  MPAA_rating TEXT,
-  studio TEXT
+  MPAA_rating TEXT
 );
 
 CREATE TABLE casts (
@@ -120,12 +121,17 @@ CREATE TABLE casts (
   character_name TEXT
 );
 
+CREATE TABLE studios (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  studio_name INTEGER
+);
+
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
 INSERT INTO movies
-VALUES (1, "Batman Begins", "2005", "PG-13", "Warner Bros."),
-(2, "The Dark Knight", "2008", "PG-13", "Warner Bros."),
-(3, "The Dark Knight Rises", "2012", "PG-13", "Warner Bros.");
+VALUES (1, 1, "Batman Begins", "2005", "PG-13"),
+(2, 1, "The Dark Knight", "2008", "PG-13"),
+(3, 1, "The Dark Knight Rises", "2012", "PG-13");
 
 INSERT INTO casts
 VALUES (1, 1, "Christian Bale", "Bruce Wayne"),
@@ -140,9 +146,12 @@ VALUES (1, 1, "Christian Bale", "Bruce Wayne"),
 (10, 2, "Maggie Gyllenhaal", "Rachel Dawes"),
 (11, 3, "Christian Bale", "Bruce Wayne"),
 (12, 3, "Gary Oldman", "Commissioner Gordon"),
-(13, 3, "Tom Hardy", "Banee"),
+(13, 3, "Tom Hardy", "Bane"),
 (14, 3, "Joseph Gordon-Levitt", "John Blake"),
 (15, 3, "Anne Hathaway", "Selina Kyle");
+
+INSERT INTO studios
+VALUES (1, "Warner Bros.");
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -150,7 +159,10 @@ VALUES (1, 1, "Christian Bale", "Bruce Wayne"),
 .print ""
 
 -- The SQL statement for the movies output
-SELECT movie_title, year_released, MPAA_rating, studio FROM movies;
+SELECT a.movie_title, a.year_released, a.MPAA_rating, b.studio_name
+from movies as a
+left join studios as b
+on a.studio_id = b.id;
 
 -- Prints a header for the cast output
 .print ""
