@@ -107,6 +107,7 @@ DROP TABLE IF EXISTS casts;
 -- Create new tables, according to your domain model
 CREATE TABLE movies (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  movie_title TEXT(30),
   year_released TEXT,
   MPAA_rating TEXT,
   studio TEXT
@@ -121,7 +122,27 @@ CREATE TABLE casts (
 
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
--- TODO!
+INSERT INTO movies
+VALUES (1, "Batman Begins", "2005", "PG-13", "Warner Bros."),
+(2, "The Dark Knight", "2008", "PG-13", "Warner Bros."),
+(3, "The Dark Knight Rises", "2012", "PG-13", "Warner Bros.");
+
+INSERT INTO casts
+VALUES (1, 1, "Christian Bale", "Bruce Wayne"),
+(2, 1, "Michael Caine", "Alfred"),
+(3, 1, "Liam Neeson", "Ra's Al Ghul"),
+(4, 1, "Katie Holmes", "Rachel Dawes"),
+(5, 1, "Gary Oldman", "Commissioner Gordon"),
+(6, 2, "Christian Bale", "Bruce Wayne"),
+(7, 2, "Heath Ledger", "Joker"),
+(8, 2, "Aaron Eckhart", "Harvey Dent"),
+(9, 2, "Michael Caine", "Alfred"),
+(10, 2, "Maggie Gyllenhaal", "Rachel Dawes"),
+(11, 3, "Christian Bale", "Bruce Wayne"),
+(12, 3, "Gary Oldman", "Commissioner Gordon"),
+(13, 3, "Tom Hardy", "Banee"),
+(14, 3, "Joseph Gordon-Levitt", "John Blake"),
+(15, 3, "Anne Hathaway", "Selina Kyle");
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -129,7 +150,7 @@ CREATE TABLE casts (
 .print ""
 
 -- The SQL statement for the movies output
--- TODO!
+SELECT movie_title, year_released, MPAA_rating, studio FROM movies;
 
 -- Prints a header for the cast output
 .print ""
@@ -139,4 +160,7 @@ CREATE TABLE casts (
 
 
 -- The SQL statement for the cast output
--- TODO!
+SELECT a.movie_title, b.actor_name, b.character_name
+from movies as a
+left join casts as b
+on a.id = b.movie_id;
