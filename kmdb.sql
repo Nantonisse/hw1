@@ -98,7 +98,7 @@
 -- Turns column mode on but headers off
 .mode column
 .headers off
-.width 30 30 30
+.width 25 25 25
 
 -- Drop existing tables, so you'll start fresh each time this script is run.
 DROP TABLE IF EXISTS movies;
@@ -128,30 +128,30 @@ CREATE TABLE studios (
 
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
-INSERT INTO movies
-VALUES (1, 1, "Batman Begins", "2005", "PG-13"),
-(2, 1, "The Dark Knight", "2008", "PG-13"),
-(3, 1, "The Dark Knight Rises", "2012", "PG-13");
+INSERT INTO movies (studio_id, movie_title, year_released, MPAA_rating) 
+VALUES (1, "Batman Begins", "2005", "PG-13"),
+(1, "The Dark Knight", "2008", "PG-13"),
+(1, "The Dark Knight Rises", "2012", "PG-13");
 
-INSERT INTO casts
-VALUES (1, 1, "Christian Bale", "Bruce Wayne"),
-(2, 1, "Michael Caine", "Alfred"),
-(3, 1, "Liam Neeson", "Ra's Al Ghul"),
-(4, 1, "Katie Holmes", "Rachel Dawes"),
-(5, 1, "Gary Oldman", "Commissioner Gordon"),
-(6, 2, "Christian Bale", "Bruce Wayne"),
-(7, 2, "Heath Ledger", "Joker"),
-(8, 2, "Aaron Eckhart", "Harvey Dent"),
-(9, 2, "Michael Caine", "Alfred"),
-(10, 2, "Maggie Gyllenhaal", "Rachel Dawes"),
-(11, 3, "Christian Bale", "Bruce Wayne"),
-(12, 3, "Gary Oldman", "Commissioner Gordon"),
-(13, 3, "Tom Hardy", "Bane"),
-(14, 3, "Joseph Gordon-Levitt", "John Blake"),
-(15, 3, "Anne Hathaway", "Selina Kyle");
+INSERT INTO casts (movie_id, actor_name, character_name)
+VALUES (1, "Christian Bale", "Bruce Wayne"),
+(1, "Michael Caine", "Alfred"),
+(1, "Liam Neeson", "Ra's Al Ghul"),
+(1, "Katie Holmes", "Rachel Dawes"),
+(1, "Gary Oldman", "Commissioner Gordon"),
+(2, "Christian Bale", "Bruce Wayne"),
+(2, "Heath Ledger", "Joker"),
+(2, "Aaron Eckhart", "Harvey Dent"),
+(2, "Michael Caine", "Alfred"),
+(2, "Maggie Gyllenhaal", "Rachel Dawes"),
+(3, "Christian Bale", "Bruce Wayne"),
+(3, "Gary Oldman", "Commissioner Gordon"),
+(3, "Tom Hardy", "Bane"),
+(3, "Joseph Gordon-Levitt", "John Blake"),
+(3, "Anne Hathaway", "Selina Kyle");
 
-INSERT INTO studios
-VALUES (1, "Warner Bros.");
+INSERT INTO studios (studio_name)
+VALUES ("Warner Bros.");
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -162,7 +162,8 @@ VALUES (1, "Warner Bros.");
 SELECT a.movie_title, a.year_released, a.MPAA_rating, b.studio_name
 from movies as a
 left join studios as b
-on a.studio_id = b.id;
+on a.studio_id = b.id
+order by a.id;
 
 -- Prints a header for the cast output
 .print ""
@@ -175,4 +176,5 @@ on a.studio_id = b.id;
 SELECT a.movie_title, b.actor_name, b.character_name
 from movies as a
 left join casts as b
-on a.id = b.movie_id;
+on a.id = b.movie_id
+order by b.id;
